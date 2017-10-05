@@ -12,7 +12,7 @@ document.addEventListener('keydown', function(event) {
       reo.x_speed = 5;
       break;
     case 32://jump
-      reo.y_speed = -5;
+      reo.y_speed = -15;
       break;
     }
 });
@@ -75,7 +75,6 @@ class component {
     this.color = color;
     this.type = type;
 
-
     this.width = width;
     this.height = height;
 
@@ -99,7 +98,7 @@ class component {
           x += reo.x_speed;
           reo.y_speed += reo.gravity;
           y += reo.y_speed;
-          this.check_stops();
+          this.check_stops();//Reo only
       },
       check_stops : function() {
           var bottom = _2d_scroller.canvas.height - height;
@@ -107,13 +106,13 @@ class component {
             y = bottom;
             this.gravity_speed = 0;
           }
-
+          return;
           if (x <= 1) {
             x = 1;
             this.x_speed = 0; //Potentially a problem, might get stuck when touching wall.
           } else if (x >= _2d_scroller.canvas.width - reo.width)
           {
-            x = _2d_scroller.canvas.width - reo.width;
+            x = reo.canvas.width - reo.width;
             this.x_speed = 0;
           }
         },
@@ -142,6 +141,12 @@ class component {
         right: false,
         jump: false
       };
+      this.update_pos = function()
+      {
+
+      };
+      this.isJumping = false;
+
     }
   }
 }
