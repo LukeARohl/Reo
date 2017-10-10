@@ -12,6 +12,10 @@ var score;
 var timer;
 var reo;
 
+//TODO 
+var DEFAULT_X = 0;
+var DEFAULT_Y = 15;
+
 
 document.addEventListener('keydown', function(event) {
   switch(event.keyCode){
@@ -48,11 +52,11 @@ function start_game() {
   reo = new Player().reo_component;
 
   game_pieces = new Array(
-      new component(200, 25, "white", 300,100,"platform")/*,
+      new component(200, 25, "white", 300,200,"platform")/*,
       new component(200,25,"white", 2500,150, "platform"),
       new component(200,25,"white", 100,300, "platform"),
-      new component(200,25,"white", 25,10, "platform"),
-      new component(20,250,"white", 500,150, "platform")*/
+      new component(200,25,"white", 25,10, "platform")*/,
+      new component(20,250,"white", 500,150, "platform")
     );
 
 
@@ -68,21 +72,58 @@ function start_game() {
   //set timer function
   timer = setInterval(function()
           {
-            _2d_scroller.clear();
+            _2d_scroller.clear();//clear map
 
-            reo.update_pos();
-            reo.update();
-
-            for (var i = 0; i < game_pieces.length; i++) {
-              //reo.check_crash(game_pieces[i]);
-              game_pieces[i].movement.update_pos();
-              game_pieces[i].update();
+            var crash = false;
+            var piece = null;
+            for(var i = 0; i<game_pieces.length; i++)
+            {
+              //check every piece against reo for crash
               if(game_pieces[i].check_crash(reo))
               {
-                console.log("COLLISION");
+                crash =  true;
+                x_speed = 0;
+                piece = game_pieces[i];
+                break;
+              }
+
+            }
+
+            if(!crash)//no crash
+            {
+              //update everything
+              for ( i = 0; i < game_pieces.length; i++) {
+
+                    game_pieces[i].movement.update_pos(DEFAULT_X);
+                    reo.update_pos(DEFAULT_Y);
+                }
+
+            } else {//crash
+              //Determine x distance
+              if(piece.x < reo.x)
+                {speed_x = reo.x - piece.x + piece.width;} //negative x
+              else if(reo.x + reo.width > piece.x + piece.widh) //
+                {speed_x = piece.x + piece.width - reo.x;} //positive x
+
+              //Move all pieces that amount of x
+              for ( i = 0; i < game_pieces.length; i++)
+              {
+                game_pieces[i].movement.update_pos(speed_x);
+                game_pieces[i].update();
               }
             }
 
+            //set Reo position
+              //Determine y distance
+              //Move Reo that amount of y
+              if(reo.y > piece.y)
+                {speed_y = (piece.y + piece.height) - (reo.y + reo.height);}//positive y
+              else if(reo.y + reo.height < piece.y + piece.height)
+                {speed_y = reo.y - piece.y + piece.height;}//negative y
+
+
+              reo.update_pos(speed_y);
+              reo.update();
           }, 20);
 }
 
@@ -100,3 +141,8 @@ var _2d_scroller = {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 };
+
+
+{
+
+}

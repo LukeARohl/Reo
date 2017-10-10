@@ -12,8 +12,6 @@ class component {
     this.width = width;
     this.height = height;
 
-    this.x_speed = x;
-
     this.update = function()
     {
       var ctx = _2d_scroller.canvas.getContext("2d");
@@ -32,18 +30,14 @@ class component {
       var check_right = check.x + check.width;
       var check_top = check.y;
       var check_bottom = check.y + check.height;
-      var crash = true;
-      /*
-      if ((bottom < check_top) || (top > check_bottom)
-          || (right < check_left) || (left > check_right)) {
-        crash = false;
-      }
-      */
-      if((top < check_bottom && bottom > check_top)
-            && (right > check_left && left < check_right))
+      var crash = false;
+
+      if(top < check_bottom && bottom > check_top && right > check_left && left < check_right)
       {
         console.log("Reo is colliding");
         check.y_speed = 0;
+        crash = true;
+
       } else
       {
         check.y_speed = 15;
@@ -52,9 +46,9 @@ class component {
     };
 
     this.movement = {
-      update_pos : function()
-      {
-          this.x_speed = 5;
+      update_pos : function(amount_x)
+      {//TODO
+          this.x_speed = amount_x;
 
           if(reo.input.left)
           {
@@ -65,5 +59,6 @@ class component {
           }
       },
     };
+
   }
 }
