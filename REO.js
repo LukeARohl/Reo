@@ -48,11 +48,11 @@ function start_game() {
   reo = new Player().reo_component;
 
   game_pieces = new Array(
-      new component(200, 25, "white", 300,100,"platform")/*,
+      new component(200, 25, "white", 300,100,"platform"),
       new component(200,25,"white", 2500,150, "platform"),
       new component(200,25,"white", 100,300, "platform"),
       new component(200,25,"white", 25,10, "platform"),
-      new component(20,250,"white", 500,150, "platform")*/
+      new component(20,250,"white", 500,150, "platform")
     );
 
 
@@ -71,17 +71,31 @@ function start_game() {
             _2d_scroller.clear();
 
             reo.update_pos();
-            reo.update();
 
-            for (var i = 0; i < game_pieces.length; i++) {
+            for (var i = 0; i < game_pieces.length; i++)
+            {
               //reo.check_crash(game_pieces[i]);
               game_pieces[i].movement.update_pos();
-              game_pieces[i].update();
               if(game_pieces[i].check_crash(reo))
               {
+                var piece = game_pieces[i];
                 console.log("COLLISION");
+
+                if(reo.y + reo.height > piece.y && reo.y < piece.y)
+                {
+                  reo.y = piece.y - reo.height;
+                }
+                else if(reo.y < piece.y + piece.height)
+                {
+                  reo.y = piece.y + piece.height;
+                }
+
               }
+
+              game_pieces[i].update();
             }
+
+            reo.update();
 
           }, 20);
 }

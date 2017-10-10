@@ -32,7 +32,7 @@ class component {
       var check_right = check.x + check.width;
       var check_top = check.y;
       var check_bottom = check.y + check.height;
-      var crash = true;
+      var crash = false;
       /*
       if ((bottom < check_top) || (top > check_bottom)
           || (right < check_left) || (left > check_right)) {
@@ -42,12 +42,9 @@ class component {
       if((top < check_bottom && bottom > check_top)
             && (right > check_left && left < check_right))
       {
-        console.log("Reo is colliding");
-        check.y_speed = 0;
-      } else
-      {
-        check.y_speed = 15;
+        crash = true;
       }
+
       return crash;
     };
 
