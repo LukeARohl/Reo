@@ -25,8 +25,8 @@ class Player {
     };
 
     this.reo_component.update_pos = function(amount_y)
-    {//TODO
-      reo.speed_y = amount_y;
+    {//TODO set speed_y
+      reo.speed_y = amount_y + DEFAULT_Y;
 
       if(reo.speed_y < 0)//landed on top of something
       {
