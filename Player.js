@@ -24,25 +24,11 @@ class Player {
       ctx.fillRect(reo.x, reo.y, reo.width, reo.height);
     };
 
+    
     this.reo_component.update_pos = function(amount_y)
-    {//TODO set speed_y
-      reo.speed_y = amount_y + DEFAULT_Y;
-
-      if(reo.speed_y < 0)//landed on top of something
-      {
-        //not jumping
-        this.reo_component.isJumping = false;
-
-      } else if(reo.speed > 0)//hit something from below
-      {
-        //could be jumping
-
-      } else //already against something
-      {
-        //not jumping
-        this.reo_component.isJumping = false;
-      }
-
+    {
+      reo.y_speed = amount_y;
+      //reo.y_speed must be set by here
       if(reo.input.jump)
       {
         reo.y -= reo.y_speed;
@@ -54,11 +40,16 @@ class Player {
           reo.y = _2d_scroller.canvas.height - reo.height;
         }
       }
+
+
       return;
     }
 
 
 
 
-  }
+
+  } //end of constructore
+
+
 }

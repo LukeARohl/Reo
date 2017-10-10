@@ -12,7 +12,7 @@ var score;
 var timer;
 var reo;
 
-//TODO 
+//TODO
 var DEFAULT_X = 0;
 var DEFAULT_Y = 15;
 
@@ -120,6 +120,24 @@ function start_game() {
                 {speed_y = (piece.y + piece.height) - (reo.y + reo.height);}//positive y
               else if(reo.y + reo.height < piece.y + piece.height)
                 {speed_y = reo.y - piece.y + piece.height;}//negative y
+
+                //TODO alter speed_y according to gravity
+                if(speed_y < 0)//landed on top of something
+                {
+                  //not jumping
+                  this.reo_component.isJumping = false;
+
+
+                } else if(speed_y > 0)//hit something from below
+                {
+                  //could be jumping
+
+                } else //already against something
+                {//speed_y = 0
+                  //not jumping
+                  this.reo_component.isJumping = false;
+                }
+
 
 
               reo.update_pos(speed_y);
