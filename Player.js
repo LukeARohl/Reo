@@ -9,7 +9,13 @@ class Player {
     this.reo_component.gravity = 1;
     this.reo_component.gravity_speed = 1;
     this.reo_component.y_speed = 15;
-
+    this.reo_component.x_speed = 5;
+    this.reo_component.isColliding = {
+      top : false,
+      bot : false,
+      left : false,
+      right : false
+    };
 
     this.reo_component.input = {
       left: false,
@@ -40,18 +46,5 @@ class Player {
       }
       return;
     };
-
-    this.reo_component.movement.check_stops = function()
-    {
-      var bottom = _2d_scroller.canvas.height - height;
-      if (y > bottom) {
-        y = bottom;
-        this.gravity_speed = 0;
-        this.reo_component.isJumping = false;
-        this.reo_component.turns_jumping = 0;
-      }
-    };
-
-
   }
 }
