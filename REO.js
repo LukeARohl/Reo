@@ -8,12 +8,12 @@ document.getElementsByTagName("head")[0].appendChild(component_js);
 document.getElementsByTagName("head")[0].appendChild(player_js);
 
 var game_pieces;
-var score;
+var scoreElement;
+var scoreValue = 0;
 var timer;
 var reo;
 
-
-document.addEventListener('keydown', function(event) {
+this.key_down_event_handler = function(event) {
   switch(event.keyCode){
     case 65://left
       if(!reo.isColliding.left)
@@ -31,7 +31,8 @@ document.addEventListener('keydown', function(event) {
       reo.input.jump = true;
       break;
     }
-});
+};
+document.addEventListener('keydown', key_down_event_handler);
 document.addEventListener('keyup',function(event) {
   switch(event.keyCode)
   {
@@ -52,13 +53,25 @@ document.addEventListener('keyup',function(event) {
 
 function start_game() {
   reo = new Player().reo_component;
+  scoreElement = document.getElementById("score");
+  scoreElement.innerHTML = "Score: " + 0;
 
   game_pieces = new Array(
-      new component(200, 25, "white", 300,100,"1"),
-      new component(200,25,"white", 2500,150, "2"),
-      new component(200,25,"white", 100,300, "3"),
-      new component(200,25,"white", 25,10, "4"),
-      new component(20,250,"white", 500,150, "5")
+      new component(200, 25, "white", 300,100,"platform"),
+      new component(200,25,"white", 2500,150, "platform"),
+      new component(200,25,"white", 100,300, "platform"),
+      new component(200,25,"white", 25,10, "platform"),
+      new component(20,250,"white", 500,150, "platform"),
+
+      new component(30,30,"yellow", 300,300,"coin"),
+      new component(30,30,"yellow", 550,300,"coin"),
+      new component(30,30,"yellow", 700,300,"coin"),
+      new component(30,30,"yellow", 850,300,"coin"),
+
+      new component(50,30,"red",350,300,"enemy"),
+      
+      new component(100,900,"purple", 8000,0,"end_zone")
+
     );
 
 
@@ -89,10 +102,28 @@ function start_game() {
                 if(piece.type == "coin")
                 {
                   //remove coin
-                  //game_pieces = game_pieces.splice(i,1);
+                  game_pieces.splice(i,1);
+                  console.log(game_pieces.length);
                   //increment score
+                  scoreValue += 5;
+                  scoreElement.innerHTML = "Score: " + scoreValue;
                   //set piece back to null?
+                  piece = null;
+                } else if (piece.type == "enemy")
+                {
+                  console.log("collision w/ enemy");
+                  document.removeEventListener('keydown', key_down_event_handler);
+                  scoreElement.innerHTML = "Score " + scoreValue + "<br>Game Over";
+                  timer = null;
+                } else if (piece.type == "end_zone")
+                {
+                  timer = null;
+                  console.log("End Zone Reached");
+                  document.removeEventListener('keydown', function(){});
+                  scoreElement.innerHTML = "Score " + scoreValue + "<br>Game Over";
+                  alert("You Win!");
                 }
+
               }
             }
 
