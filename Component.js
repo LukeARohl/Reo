@@ -1,8 +1,6 @@
 class component {
   constructor(width, height, color, x, y, type)
   {
-    this.score = 0;
-
     this.x = x;
     this.y = y;
 
@@ -12,53 +10,51 @@ class component {
     this.width = width;
     this.height = height;
 
+
+
     this.update = function()
     {
       var ctx = _2d_scroller.canvas.getContext("2d");
       ctx.fillStyle = color;
-      ctx.fillRect(x, y, width, height);
+      ctx.fillRect(this.x, this.y, this.width, this.height);
     };
 
     this.check_crash = function(check)
     {
       //console.log(check);
-      var left = x;
-      var right = x + width;
-      var top = y;
-      var bottom = y + height;
+      var left = this.x;
+      var right = this.x + this.width;
+      var top = this.y;
+      var bottom = this.y + this.height;
       var check_left = check.x;
       var check_right = check.x + check.width;
       var check_top = check.y;
       var check_bottom = check.y + check.height;
       var crash = false;
-
-      if(top < check_bottom && bottom > check_top && right > check_left && left < check_right)
-      {
-        console.log("Reo is colliding");
-        check.y_speed = 0;
-        crash = true;
-
-      } else
-      {
-        check.y_speed = 15;
+      /*
+      if ((bottom < check_top) || (top > check_bottom)
+          || (right < check_left) || (left > check_right)) {
+        crash = false;
       }
+      */
+      if((top < check_bottom && bottom > check_top)
+            && (right > check_left && left < check_right))
+      {
+        crash = true;
+      }
+
       return crash;
     };
 
-    this.movement = {
-      update_pos : function(amount_x)
-      {//TODO
-          this.x_speed = amount_x;
-
-          if(reo.input.left)
-          {
-            x += this.x_speed;
-          } else if (reo.input.right)
-          {
-            x -= this.x_speed;
-          }
-      },
+    this.update_pos = function()
+    {
+        if(reo.input.left && !reo.isColliding.left)
+        {
+          this.x += reo.x_speed;
+        } else if (reo.input.right && !reo.isColliding.right)
+        {
+          this.x -= reo.x_speed;
+        }
     };
-
   }
 }
