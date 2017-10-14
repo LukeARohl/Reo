@@ -2,7 +2,7 @@ var reo;
 
 class Player {
   constructor(){
-    this.reo_component = new component(49, 49, "gray", 100, 100, "player");
+    this.reo_component = new component(50, 50, "gray", 100, 100, "player");
 
     this.reo_component.turns_jumping = 0;
 

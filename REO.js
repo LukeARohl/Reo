@@ -69,7 +69,7 @@ function start_game() {
       new component(200,25,"white", 2500,150, "platform"),
       new component(200,25,"white", 100,300, "platform"),
       new component(200,25,"white", 25,10, "platform"),
-      new component(200,250,"white", 500,150, "platform"),
+      new component(20,250,"white", 500,150, "platform"),
 
       new component(30,30,"yellow", 300,300,"coin"),
       new component(30,30,"yellow", 550,300,"coin"),
@@ -124,7 +124,6 @@ function start_game() {
                 {
                   //remove coin
                   game_pieces.splice(i,1);
-                  previous_pieces.splice(i,1);
                   console.log(game_pieces.length);
                   //increment score
                   scoreValue += 5;
@@ -136,14 +135,14 @@ function start_game() {
                   console.log("collision w/ enemy");
                   document.removeEventListener('keydown', key_down_event_handler);
                   scoreElement.innerHTML = "Score " + scoreValue + "<br>Game Over";
-                  clearInterval(timer);
+                  timer = null;
                 } else if (piece.type == "end_zone")
                 {
                   timer = null;
                   console.log("End Zone Reached");
                   document.removeEventListener('keydown', function(){});
-                  scoreElement.innerHTML = "Score " + scoreValue + "<br>You Win!";
-                  piece = last_piece;
+                  scoreElement.innerHTML = "Score " + scoreValue + "<br>Game Over";
+                  alert("You Win!");
                 }
 
               }
