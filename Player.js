@@ -2,13 +2,13 @@ var reo;
 
 class Player {
   constructor(){
-    this.reo_component = new component(50, 50, "red", 100, 100, "player");
+    this.reo_component = new component(49, 49, "gray", 100, 100, "player");
 
     this.reo_component.turns_jumping = 0;
 
     this.reo_component.gravity = 1;
     this.reo_component.gravity_speed = 1;
-    this.reo_component.y_speed = 15;
+    this.reo_component.y_speed = 10;
     this.reo_component.x_speed = 5;
     this.reo_component.isColliding = {
       top : false,
@@ -36,6 +36,10 @@ class Player {
       if(reo.input.jump)
       {
         reo.y -= reo.y_speed;
+        if(reo.y <= 0)
+        {
+          reo.y = 0;
+        }
       } else
       {
         reo.y += reo.y_speed;
@@ -43,6 +47,7 @@ class Player {
         {
           reo.y = _2d_scroller.canvas.height - reo.height;
         }
+
       }
       return;
     };
