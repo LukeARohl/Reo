@@ -12,9 +12,13 @@ var previous_pieces;
 var scoreElement;
 var scoreValue = 0;
 var timer;
+
 var reo;
-var last_reo;
-var last_collision;
+var reo_image = new Image();
+var reo_right = "./reo_right.png";
+var reo_left = "./reo_left.png";
+reo_image.src = "./reo_right.png";
+
 
 this.key_down_event_handler = function(event) {
   switch(event.keyCode){
@@ -23,6 +27,7 @@ this.key_down_event_handler = function(event) {
       if(!reo.isColliding.left)
       {
         reo.input.left = true;
+        reo_image.src = reo_left;
       }
       break;
     case 68:
@@ -30,6 +35,7 @@ this.key_down_event_handler = function(event) {
       if(!reo.isColliding.right)
       {
         reo.input.right = true;
+        reo_image.src = reo_right;
       }
       break;
     case 32://jump
@@ -65,21 +71,50 @@ function start_game() {
   scoreElement.innerHTML = "Score: " + 0;
 
   game_pieces = new Array(
-      new component(200, 25, "white", 300,100,"platform"),
-      new component(200,25,"white", 2500,150, "platform"),
+      //starting zone
+      new component(25,600,"white", -25,0,"platform"),
+      new component(400,25,"white", -10,-10, "platform"),
+      new component(25,600,"white",385,-610,"platform"),
+
+      //rising jumps
       new component(200,25,"white", 100,300, "platform"),
-      new component(200,25,"white", 25,10, "platform"),
-      new component(20,250,"white", 500,150, "platform"),
+      new component(200, 25, "white", 300,200,"platform"),
+      new component(200,25,"white",500,100,"platform"),
+      new component(30,30,"yellow", 700,300,"coin"),//coin at base of wall
 
-      new component(30,30,"yellow", 300,300,"coin"),
-      new component(30,30,"yellow", 550,300,"coin"),
-      new component(30,30,"yellow", 700,300,"coin"),
-      new component(30,30,"yellow", 850,300,"coin"),
+      //wall
+      new component(30,30,"yellow", 775,55,"coin"),//coin a top wall
+      new component(100,300,"white",750,100 ,"platform"),
 
-      new component(50,30,"red",350,300,"enemy"),
+      new component(200,25,"white",790,350,"platform"),
+      new component(200,25,"white", 1090,250,"platform"),
+      new component(30,30,"yellow", 1150,200,"coin"),
+      new component(300,25,"red",890,380,"enemy"),
 
-      new component(100,900,"purple", 8000,0,"end_zone")
+      new component(300,25,"red",1290,380,"enemy"),
+      new component(200,25,"white", 1390,325,"platform"),
 
+      //top split
+      new component(30,30,"yellow",1810,100,"coin"),
+      new component(200,25,"white",1590,150,"platform"),
+      new component(200,25,"white",1890,150,"platform"),
+      new component(300,25,"red",1590,200,"enemy"),
+      new component(300,25,"red",1890,200,"enemy"),
+
+      //Bot split
+      new component(25,50,"red",1790,350,"enemy"),
+      new component(30,30,"yellow",1790,300,"coin"),
+      new component(25,50,"white",1990,350,"platform"),
+      new component(30,30,"yellow",1990,300,"coin"),
+
+      //Final Hurdle
+      new component(200,25,"white", 2350,350,"platform"),
+      new component(30,30,"yellow",2600,150,"coin"),
+      new component(25,150,"red",2600,250,"enemy"),
+      new component(200,25,"white", 2650,200,"platform"),
+
+      new component(30,30,"yellow",2950,350,"coin"), //pity coin
+      new component(100,900,"purple", 3000,0,"end_zone")
     );
 
     previous_pieces = []
@@ -140,9 +175,9 @@ function start_game() {
                 {
                   timer = null;
                   console.log("End Zone Reached");
-                  document.removeEventListener('keydown', function(){});
-                  scoreElement.innerHTML = "Score " + scoreValue + "<br>Game Over";
-                  alert("You Win!");
+                  document.removeEventListener('keydown', key_down_event_handler);
+                  scoreElement.innerHTML = "Score " + scoreValue + "<br>You Win!";
+                  piece = null;
                 }
 
               }
@@ -247,7 +282,6 @@ var _2d_scroller = {
     canvas.height = 400;
     this.context = canvas.getContext("2d");
     document.body.insertBefore(canvas, document.body.childNodes[0]);
-    //this.num_frames = 0;
   },
   clear: function() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
