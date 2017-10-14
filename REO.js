@@ -11,7 +11,13 @@ var game_pieces;
 var scoreElement;
 var scoreValue = 0;
 var timer;
+
 var reo;
+var reo_image = new Image();
+var reo_right = "./reo_right.png";
+var reo_left = "./reo_left.png";
+reo_image.src = "./reo_right.png";
+
 
 this.key_down_event_handler = function(event) {
   switch(event.keyCode){
@@ -19,12 +25,14 @@ this.key_down_event_handler = function(event) {
       if(!reo.isColliding.left)
       {
         reo.input.left = true;
+        reo_image.src = reo_left;
       }
       break;
     case 68://right
       if(!reo.isColliding.right)
       {
         reo.input.right = true;
+        reo_image.src = reo_right;
       }
       break;
     case 32://jump
@@ -234,7 +242,6 @@ var _2d_scroller = {
     canvas.height = 400;
     this.context = canvas.getContext("2d");
     document.body.insertBefore(canvas, document.body.childNodes[0]);
-    //this.num_frames = 0;
   },
   clear: function() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

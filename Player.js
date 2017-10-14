@@ -27,7 +27,8 @@ class Player {
     {
       var ctx = _2d_scroller.canvas.getContext("2d");
       ctx.fillStyle = reo.color;
-      ctx.fillRect(reo.x, reo.y, reo.width, reo.height);
+      ctx.drawImage(reo_image,reo.x,reo.y,50,50);
+      //ctx.fillRect(reo.x, reo.y, reo.width, reo.height);
     };
 
     this.reo_component.update_pos = function()
